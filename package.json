@@ -58,6 +58,12 @@
       }
     ]
     ,"baseBranch": "parallel-dev"
+    ,"reporters": {
+      "github": { },
+      "json": {
+        "path": "/tmp/bundlesize.json"
+      }
+    }
   },
   "lint-staged": {
     "*.js": [
