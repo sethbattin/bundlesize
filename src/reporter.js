@@ -5,6 +5,7 @@ const build = require('./build')
 const api = require('./api')
 const debug = require('./debug')
 const shortener = require('./shortener')
+const { baseBranch } = require('./config')
 
 const setBuildStatus = ({
   url,
@@ -16,7 +17,7 @@ const setBuildStatus = ({
 }) => {
   if (fail) build.fail(globalMessage || 'bundle size > maxSize', url)
   else {
-    if (currentEvent === 'push' && currentBranch === 'master') {
+    if (currentEvent === 'push' && currentBranch === baseBranch) {
       const values = []
       files.map(file => values.push({ path: file.path, size: file.size }))
       api.set(values)
