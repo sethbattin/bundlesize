@@ -56,13 +56,15 @@ const compare = (files, masterValues = {}) => {
       const diff = size - master
 
       if (diff < 0) {
-        message += `(${bytes(Math.abs(diff))} smaller than master, good job!)`
+        message += `(${bytes(
+          Math.abs(diff)
+        )} smaller than ${baseBranch}, good job!)`
         info('PASS', message)
       } else if (diff > 0) {
-        message += `(${bytes(diff)} larger than master, careful!)`
+        message += `(${bytes(diff)} larger than ${baseBranch}, careful!)`
         warn(message)
       } else {
-        message += '(same as master)'
+        message += `(same as ${baseBranch})`
         info('PASS', message)
       }
     }
