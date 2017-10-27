@@ -7,7 +7,6 @@ jest.mock('read-pkg-up', () => {
     mockPDJ
   }
 })
-const readPkgUp = require('read-pkg-up')
 
 describe('config.js', () => {
   let mockCommander
@@ -34,10 +33,26 @@ describe('config.js', () => {
       }
     ])
   })
-  it('uses package.json setting for "bundlesize" second', () => {
-    mockCommander.files = null
-    jest.doMock('commander', () => mockCommander)
-    const config = require('../config')
-    expect(config.files).toMatchObject(readPkgUp.mockPDJ.bundlesize)
+  describe('when cli options are absent', () => {
+    beforeEach(() => {
+      mockCommander.files = null
+    })
+    it('uses package.json setting for "bundlesize"', () => {
+      jest.doMock('commander', () => mockCommander)
+      const readPkgUp = require('read-pkg-up')
+      const config = require('../config')
+      expect(config.files).toMatchObject(readPkgUp.mockPDJ.bundlesize)
+    })
+    it('permits key-value config in package.json', () => {
+      jest.doMock('commander', () => mockCommander)
+      const readPkgUp = require('read-pkg-up')
+      const files = [{ path: 'new.js', maxSize: '50MB' }]
+      readPkgUp.mockPDJ.bundlesize = {
+        files: files,
+        other: 'something new'
+      }
+      const config = require('../config')
+      expect(config.files).toMatchObject(files)
+    })
   })
 })

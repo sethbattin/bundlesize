@@ -40,8 +40,24 @@ if (!packageJSONconfig && !cliConfig) {
   )
 }
 
-const config = {
-  files: cliConfig || packageJSONconfig
+const defaultConfig = {
+  files: []
+}
+let config
+if (cliConfig) {
+  config = {
+    files: cliConfig
+  }
+} else if (Array.isArray(packageJSONconfig)) {
+  config = {
+    ...defaultConfig,
+    files: packageJSONconfig
+  }
+} else {
+  config = {
+    ...defaultConfig,
+    ...(packageJSONconfig || {})
+  }
 }
 
 debug('cli config', cliConfig)
