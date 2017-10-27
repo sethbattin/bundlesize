@@ -7,20 +7,7 @@
 
 &nbsp;
 
-[![Build Status](https://travis-ci.org/siddharthkp/bundlesize.svg?branch=master)](https://travis-ci.org/siddharthkp/bundlesize)
-[![Backers on Open Collective](https://opencollective.com/bundlesize/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/bundlesize/sponsors/badge.svg)](#sponsors) [![Greenkeeper badge](https://badges.greenkeeper.io/siddharthkp/bundlesize.svg)](https://greenkeeper.io/)
-[![NPM Version](https://img.shields.io/npm/v/bundlesize.svg)](https://npmjs.org/package/bundlesize)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
-[![Join us on Slack](https://bundlesize.now.sh/badge.svg)](https://bundlesize.now.sh/)
-
-[![NPM Downloads](https://img.shields.io/npm/dm/bundlesize.svg?style=flat)](https://www.npmjs.com/package/bundlesize)
-&nbsp;
-
-#### sponsor
-
-[![Sponsor](https://app.codesponsor.io/embed/LhLT2c31ydJzdLUuSR9f8mCA/siddharthkp/bundlesize.svg)](https://app.codesponsor.io/link/LhLT2c31ydJzdLUuSR9f8mCA/siddharthkp/bundlesize)
-
-&nbsp;
+[![Build Status](https://travis-ci.org/sethbattin/bundlesize.svg?branch=parallel-dev)](https://travis-ci.org/sethbattin/bundlesize)
 
 #### minimal setup
 
@@ -125,18 +112,6 @@ For more granular configuration, we recommend configuring it in the `package.jso
 
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 
-&nbsp;
-
-#### Featured on [Totally tooling tips](https://www.youtube.com/watch?v=Da6VxdGU2Ig) and [Chrome Dev Summit](https://www.youtube.com/watch?v=_srJ7eHS3IM)!!
-
-<a href="https://www.youtube.com/watch?v=Da6VxdGU2Ig">
-  <img height="200px" src="https://i.ytimg.com/vi/Da6VxdGU2Ig/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLAAfWzQIMvjH0TIzkAhi-114DIHPQ"/>
-</a>
-<a href="https://www.youtube.com/watch?v=_srJ7eHS3IM">
-  <img height="200px" src="https://cdn.rawgit.com/siddharthkp/bundlesize/master/art/chromedevsummit.png"/>
-</a>
-
-&nbsp;
 
 #### who uses bundlesize?
 
