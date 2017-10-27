@@ -14,7 +14,7 @@ if (process.stdin.isTTY) {
 }
 
 program
-  .option('-n, --name [name]', 'custom name for a file (lib.min.js)')
+  .option('-n, --name [name]', 'label for the data stream')
   .option('-s, --max-size [maxSize]', 'maximum size threshold (3Kb)')
   .option('--debug', 'run in debug mode')
   .parse(process.argv)
