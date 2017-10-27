@@ -49,15 +49,9 @@ if (cliConfig) {
     files: cliConfig
   }
 } else if (Array.isArray(packageJSONconfig)) {
-  config = {
-    ...defaultConfig,
-    files: packageJSONconfig
-  }
+  config = Object.assign({}, defaultConfig, { files: packageJSONconfig })
 } else {
-  config = {
-    ...defaultConfig,
-    ...(packageJSONconfig || {})
-  }
+  config = Object.assign({}, defaultConfig, packageJSONconfig || {})
 }
 
 debug('cli config', cliConfig)
