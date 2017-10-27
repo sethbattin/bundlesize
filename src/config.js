@@ -1,20 +1,13 @@
 const readPkgUp = require('read-pkg-up')
 
 const pkg = readPkgUp.sync().pkg
-const program = require('commander')
+/* Config from CLI */
+const program = require('./input')
 const { error } = require('prettycli')
 const debug = require('./debug')
 
 /* Config from package.json */
 const packageJSONconfig = pkg.bundlesize
-
-/* Config from CLI */
-
-program
-  .option('-f, --files [files]', 'files to test against (dist/*.js)')
-  .option('-s, --max-size [maxSize]', 'maximum size threshold (3Kb)')
-  .option('--debug', 'run in debug mode')
-  .parse(process.argv)
 
 let cliConfig
 
