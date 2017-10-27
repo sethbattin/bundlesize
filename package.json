@@ -57,6 +57,7 @@
         "maxSize": "600B"
       }
     ]
+    ,"baseBranch": "parallel-dev"
   },
   "lint-staged": {
     "*.js": [
