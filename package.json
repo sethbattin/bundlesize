@@ -15,7 +15,8 @@
   "scripts": {
     "precommit": "lint-staged",
     "test": "scripts/testSelf.sh && scripts/testPipe.sh && jest",
-    "lint": "eslint src store/*.js"
+    "lint": "eslint src store/*.js",
+    "postpack": "rm -rf tmp && scripts/testPack.sh"
   },
   "keywords": [
     "library",
@@ -26,9 +27,8 @@
     "maxSize"
   ],
   "files": [
-    "index.js",
-    "src",
-    "pipe.js"
+    "bin",
+    "src"
   ],
   "engines": {
     "npm": "^5.0.0"
