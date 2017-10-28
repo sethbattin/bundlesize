@@ -4,14 +4,15 @@ IFS=$'\n\t'
 # take the result of `npm pack` and install it in a test npm project
 
 #TODO: extract from package.json
-PACKAGE_NAME="bundlereport"
-PACKAGE_VERSION="1.0.0"
+PACKAGE_NAME=`node -p "require(\"./package.json\").name"`
+PACKAGE_VERSION=`node -p "require(\"./package.json\").version"`
 PACK_TGZ=${PACKAGE_NAME}-${PACKAGE_VERSION}.tgz
 echo "testing $PACK_TGZ"
 
-mkdir tmp
-cp $PACK_TGZ tmp
-cd tmp
+TEST_DIR=tmp/test_pack_$PACKAGE_VERSION
+mkdir -p $TEST_DIR
+cp $PACK_TGZ $TEST_DIR
+cd $TEST_DIR
 printf '{
   "bundlereport": {
     "files": [
@@ -19,10 +20,14 @@ printf '{
     ]
   },
   "scripts": {
-    "test": "bundlereport"
+    "test": "npm run main && npm run pipe",
+    "main": "bundlereport",
+    "pipe": "echo blah | bundlereport-pipe --name testpipe.js --max-size=1kb"
   }
 }
 ' > package.json
 ( HOME=`pwd` npm init -y )
 npm i $PACK_TGZ
 npm test
+
+echo "PASS npm-pack functional tests"
