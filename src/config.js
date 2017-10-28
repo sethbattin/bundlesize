@@ -7,7 +7,7 @@ const { error } = require('prettycli')
 const debug = require('./debug')
 
 /* Config from package.json */
-const packageJSONconfig = pkg.bundlesize
+const packageJSONconfig = pkg.bundlereport
 
 let cliConfig
 
@@ -27,7 +27,7 @@ if (!packageJSONconfig && !cliConfig) {
     `Config not found.
 
     You can read about the configuration options here:
-    https://github.com/siddharthkp/bundlesize#configuration
+    https://github.com/sethbattin/bundlesize#configuration
   `,
     { silent: true }
   )

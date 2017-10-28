@@ -8,9 +8,9 @@
   },
   "main": "src/reporter.js",
   "bin": {
-    "bundlesize": "bin/index.js",
-    "bundlesize-init": "bin/init-status.js",
-    "bundlesize-pipe": "bin/pipe.js"
+    "bundlereport": "bin/index.js",
+    "bundlereport-init": "bin/init-status.js",
+    "bundlereport-pipe": "bin/pipe.js"
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -47,7 +47,7 @@
     "prettycli": "^1.4.3",
     "read-pkg-up": "^2.0.0"
   },
-  "bundlesize": {
+  "bundlereport": {
     "files": [
       {
         "path": "./bin/index.js",
