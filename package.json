@@ -50,15 +50,15 @@
   "bundlesize": {
     "files": [
       {
-        "path": "./index.js",
+        "path": "./bin/index.js",
         "maxSize": "600B"
       },
       {
         "path": "./src/files.js",
         "maxSize": "600B"
       }
-    ]
-    ,"baseBranch": "parallel-dev"
+    ],
+    "baseBranch": "parallel-dev"
   },
   "lint-staged": {
     "*.js": [
