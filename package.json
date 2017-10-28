@@ -6,11 +6,11 @@
     "type": "git",
     "url": "git+https://github.com/sethbattin/bundlesize.git"
   },
-  "main": "index.js",
+  "main": "src/reporter.js",
   "bin": {
-    "bundlesize": "index.js",
-    "bundlesize-init": "src/init-status.js",
-    "bundlesize-pipe": "pipe.js"
+    "bundlesize": "bin/index.js",
+    "bundlesize-init": "bin/init-status.js",
+    "bundlesize-pipe": "bin/pipe.js"
   },
   "scripts": {
     "precommit": "lint-staged",
