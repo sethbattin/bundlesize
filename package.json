@@ -1,10 +1,10 @@
 {
-  "name": "bundlesize",
-  "version": "0.15.3",
-  "description": "Keep your library size in check",
+  "name": "bundlereport",
+  "version": "1.0.0",
+  "description": "Track your bundle size over time",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/siddharthkp/bundlesize.git"
+    "url": "git+https://github.com/sethbattin/bundlesize.git"
   },
   "main": "index.js",
   "bin": {
@@ -22,6 +22,7 @@
     "size",
     "check",
     "build",
+    "performance",
     "maxSize"
   ],
   "files": [
@@ -32,7 +33,7 @@
   "engines": {
     "npm": "^5.0.0"
   },
-  "author": "siddharthkp",
+  "author": "sethbattin",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.17.0",
@@ -88,10 +89,5 @@
     "jest": "^21.2.1",
     "lint-staged": "^4.0.4",
     "prettier": "^1.6.0"
-  },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/bundlesize",
-    "logo": "https://opencollective.com/opencollective/logo.txt"
   }
 }
