@@ -1,5 +1,5 @@
 {
-  "name": "bundlereport",
+  "name": "bundle-report",
   "version": "1.0.0",
   "description": "Track your bundle size over time",
   "repository": {
@@ -8,9 +8,9 @@
   },
   "main": "src/reporter.js",
   "bin": {
-    "bundlereport": "bin/index.js",
-    "bundlereport-init": "bin/init-status.js",
-    "bundlereport-pipe": "bin/pipe.js"
+    "bundle-report": "bin/index.js",
+    "bundle-report-init": "bin/init-status.js",
+    "bundle-report-pipe": "bin/pipe.js"
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -47,7 +47,7 @@
     "prettycli": "^1.4.3",
     "read-pkg-up": "^2.0.0"
   },
-  "bundlereport": {
+  "bundleReport": {
     "files": [
       {
         "path": "./bin/index.js",

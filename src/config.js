@@ -7,7 +7,7 @@ const { error } = require('prettycli')
 const debug = require('./debug')
 
 /* Config from package.json */
-const packageJSONconfig = pkg.bundlereport
+const packageJSONconfig = pkg.bundleReport
 
 let cliConfig
 

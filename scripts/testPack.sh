@@ -3,7 +3,6 @@ set -euo pipefail
 IFS=$'\n\t'
 # take the result of `npm pack` and install it in a test npm project
 
-#TODO: extract from package.json
 PACKAGE_NAME=`node -p "require(\"./package.json\").name"`
 PACKAGE_VERSION=`node -p "require(\"./package.json\").version"`
 PACK_TGZ=${PACKAGE_NAME}-${PACKAGE_VERSION}.tgz
@@ -14,15 +13,15 @@ mkdir -p $TEST_DIR
 cp $PACK_TGZ $TEST_DIR
 cd $TEST_DIR
 printf '{
-  "bundlereport": {
+  "bundleReport": {
     "files": [
       { "path": "package.json", "size": "3kb" }
     ]
   },
   "scripts": {
     "test": "npm run main && npm run pipe",
-    "main": "bundlereport",
-    "pipe": "echo blah | bundlereport-pipe --name testpipe.js --max-size=1kb"
+    "main": "bundle-report",
+    "pipe": "echo blah | bundle-report-pipe --name testpipe.js --max-size=1kb"
   }
 }
 ' > package.json

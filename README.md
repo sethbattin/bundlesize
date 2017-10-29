@@ -12,7 +12,7 @@
 #### minimal setup
 
 ```sh
-npm install bundlereport --save-dev
+npm install bundle-report --save-dev
 ```
 
 &nbsp;
@@ -23,7 +23,7 @@ Add it to your scripts in `package.json`
 
 ```json
 "scripts": {
-  "test": "bundlereport"
+  "test": "bundle-report"
 }
 ```
 
@@ -32,7 +32,7 @@ Add it to your scripts in `package.json`
 Or you can use `npx` with [NPM 5.2+](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b).
 
 ```sh
-npx bundlereport
+npx bundle-report
 ```
 
 #### configuration
@@ -45,7 +45,7 @@ npx bundlereport
 {
   "name": "your cool library",
   "version": "1.1.2",
-  "bundlereport": {
+  "bundle-report": {
     "files": [
       {
         "path": "./dist.js",
@@ -56,13 +56,13 @@ npx bundlereport
 }
 ```
 
-`bundlereport` also supports [glob patterns](https://github.com/isaacs/node-glob)
+`bundle-report` also supports [glob patterns](https://github.com/isaacs/node-glob)
 
 Example:
 
 ```json
 {
-  "bundlereport": [
+  "bundle-report": [
     "files": [
       {
         "path": "./dist/vendor-*.js",
@@ -85,7 +85,7 @@ This makes it great for using with applications that are bundled with another to
 
 ![build status](https://cdn.rawgit.com/sethbattin/bundlesize/master/art/status.png)
 
-Bundle report uses the storage server of its fork source, [bundlesize](https://github.com/siddharthkp/bundlesize/).  (Old references still exist.)  buildsize hosts a server store that both 1.) uses the [Github Status API](https://developer.github.com/v3/repos/statuses/) to mark commits and PRs, and 2.) saves the results from the previous build, if that build is "master".  bundlereport allows this storage to apply to any branch name via the `baseBranch` config option.  The ability to check against any merge target is on the TODO list.
+Bundle report uses the storage server of its fork source, [bundlesize](https://github.com/siddharthkp/bundlesize/).  (Old references still exist.)  buildsize hosts a server store that both 1.) uses the [Github Status API](https://developer.github.com/v3/repos/statuses/) to mark commits and PRs, and 2.) saves the results from the previous build, if that build is "master".  bundle-report allows this storage to apply to any branch name via the `baseBranch` config option.  The ability to check against any merge target is on the TODO list.
 
 To use the size comparison (via `bundlesize`):
 - [Authorize `bundlesize` for status access](https://github.com/login/oauth/authorize?scope=repo%3Astatus&client_id=6756cb03a8d6528aca5a), copy the token provided.
@@ -100,7 +100,7 @@ Currently works for [Travis CI](https://travis-ci.org), [CircleCI](https://circl
 example usage:
 
 ```sh
-bundlereport -f "dist/*.js" -s 20kB
+bundle-report -f "dist/*.js" -s 20kB
 ```
 
 For more granular configuration, we recommend configuring it in the `package.json` (documented above).

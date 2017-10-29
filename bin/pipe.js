@@ -10,7 +10,7 @@ const build = require('../src/build')
 const debug = require('../src/debug')
 
 if (process.stdin.isTTY) {
-  error('bundlereport-pipe executable is meant for usage with piped data.')
+  error('bundle-report-pipe executable is meant for usage with piped data.')
 }
 
 program
