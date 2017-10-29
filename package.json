@@ -4,7 +4,7 @@
   "description": "Track your bundle size over time",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sethbattin/bundlesize.git"
+    "url": "git+https://github.com/sethbattin/bundle-report.git"
   },
   "main": "src/reporter.js",
   "bin": {

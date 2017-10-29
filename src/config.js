@@ -27,7 +27,7 @@ if (!packageJSONconfig && !cliConfig) {
     `Config not found.
 
     You can read about the configuration options here:
-    https://github.com/sethbattin/bundlesize#configuration
+    https://github.com/sethbattin/bundle-report#configuration
   `,
     { silent: true }
   )

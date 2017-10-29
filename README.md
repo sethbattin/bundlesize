@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://cdn.rawgit.com/sethbattin/bundlesize/master/art/logo.png" height="200px">
+  <img src="https://cdn.rawgit.com/sethbattin/bundle-report/master/art/logo.png" height="200px">
   <br><br>
   <b>Keep your bundle size in check</b>
   <br>
@@ -7,7 +7,7 @@
 
 &nbsp;
 
-[![Build Status](https://travis-ci.org/sethbattin/bundlesize.svg?branch=parallel-dev)](https://travis-ci.org/sethbattin/bundlesize)
+[![Build Status](https://travis-ci.org/sethbattin/bundle-report.svg?branch=parallel-dev)](https://travis-ci.org/sethbattin/bundlesize)
 
 #### minimal setup
 
@@ -83,7 +83,7 @@ This makes it great for using with applications that are bundled with another to
 
 #### 2) build status
 
-![build status](https://cdn.rawgit.com/sethbattin/bundlesize/master/art/status.png)
+![build status](https://cdn.rawgit.com/sethbattin/bundle-report/master/art/status.png)
 
 Bundle report uses the storage server of its fork source, [bundlesize](https://github.com/siddharthkp/bundlesize/).  (Old references still exist.)  buildsize hosts a server store that both 1.) uses the [Github Status API](https://developer.github.com/v3/repos/statuses/) to mark commits and PRs, and 2.) saves the results from the previous build, if that build is "master".  bundle-report allows this storage to apply to any branch name via the `baseBranch` config option.  The ability to check against any merge target is on the TODO list.
 
