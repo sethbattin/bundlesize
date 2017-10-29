@@ -7,7 +7,7 @@
 
 &nbsp;
 
-[![Build Status](https://travis-ci.org/sethbattin/bundlereport.svg?branch=parallel-dev)](https://travis-ci.org/sethbattin/bundlesize)
+[![Build Status](https://travis-ci.org/sethbattin/bundlesize.svg?branch=parallel-dev)](https://travis-ci.org/sethbattin/bundlesize)
 
 #### minimal setup
 
