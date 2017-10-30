@@ -81,7 +81,7 @@ const compare = (files, masterValues = {}) => {
 
   debug('url before shortening', url)
 
-  shortener
+  return shortener
     .shorten(url)
     .then(res => {
       url = res.data.id
@@ -95,8 +95,10 @@ const compare = (files, masterValues = {}) => {
 }
 
 const reporter = files => {
-  if (api.enabled) api.get().then(masterValues => compare(files, masterValues))
-  else compare(files)
+  if (api.enabled) {
+    return api.get().then(masterValues => compare(files, masterValues))
+  }
+  return compare(files)
 }
 
 module.exports = reporter
