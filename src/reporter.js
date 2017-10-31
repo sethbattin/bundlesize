@@ -1,5 +1,6 @@
 const { error, warn, info } = require('prettycli')
-const { event, repo, branch, commit_message, sha } = require('ci-env')
+const ciEnv = require('ci-env')
+const { repo, commit_message, sha } = ciEnv
 const build = require('./build')
 const api = require('./api')
 const debug = require('./debug')
@@ -8,36 +9,10 @@ const { baseBranch } = require('./config')
 const compare = require('./compare').default
 const STATUS = require('./compare').STATUS
 
-const setBuildStatus = ({
-  url,
-  files,
-  globalMessage,
-  fail,
-  event: currentEvent,
-  branch: currentBranch
-}) => {
-  if (fail) build.fail(globalMessage || 'bundle size > maxSize', url)
-  else {
-    if (currentEvent === 'push' && currentBranch === baseBranch) {
-      const values = []
-      files.map(file => values.push({ path: file.path, size: file.size }))
-      api.set(values)
-    }
-    build.pass(globalMessage || 'Good job! bundle size < maxSize', url)
-  }
-
-  debug('global message', globalMessage)
-}
-
-const reporter = (files, masterValues = {}) => {
-  let fail = false
-  let globalMessage
-
-  const compared = compare(files, masterValues)
+const cliReporter = compared => {
   compared.map(file => {
     switch (file.status) {
       case STATUS.FAIL:
-        fail = true
         error(file.message)
         break
       case STATUS.WARN:
@@ -48,8 +23,27 @@ const reporter = (files, masterValues = {}) => {
         break
     }
   })
+}
+
+const apiReporter = compared => {
+  if (
+    !failed(compared) &&
+    ciEnv.event === 'push' &&
+    ciEnv.branch === baseBranch
+  ) {
+    const values = compared.map(file => ({ path: file.path, size: file.size }))
+    api.set(values)
+  }
+}
+
+const statusReporter = compared => {
+  let message
   if (compared.length === 1) {
-    globalMessage = compared[0].message
+    message = compared[0].message
+  } else if (failed(compared)) {
+    message = 'bundle size > maxSize'
+  } else {
+    message = 'Good job! bundle size < maxSize'
   }
   /* prepare the build page */
   const uriFiles = compared.map(f => {
@@ -57,36 +51,40 @@ const reporter = (files, masterValues = {}) => {
     return rest
   })
   const params = encodeURIComponent(
-    JSON.stringify({ files: uriFiles, repo, branch, commit_message, sha })
+    JSON.stringify({
+      files: uriFiles,
+      repo,
+      branch: ciEnv.branch,
+      commit_message,
+      sha
+    })
   )
-  let url = `https://bundlesize-store.now.sh/build?info=${params}`
-
+  const url = `https://bundlesize-store.now.sh/build?info=${params}`
   debug('url before shortening', url)
+  if (failed(compared)) {
+    build.fail(message, url)
+  } else {
+    build.pass(message, url)
+  }
+}
+
+const failed = compared => compared.some(v => v.status === STATUS.FAIL)
+
+const reporter = (files, masterValues = {}) => {
+  const compared = compare(files, masterValues)
+
+  cliReporter(compared)
+
+  apiReporter(compared)
 
   return shortener
-    .shorten(url)
+    .shorten('temp')
     .then(res => {
-      url = res.data.id
-      debug('url after shortening', url)
-      setBuildStatus({
-        url,
-        files: compared,
-        globalMessage,
-        fail,
-        event,
-        branch
-      })
+      statusReporter(compared)
     })
     .catch(err => {
       debug('err while shortening', err)
-      setBuildStatus({
-        url,
-        files: compared,
-        globalMessage,
-        fail,
-        event,
-        branch
-      })
+      statusReporter(compared)
     })
 }
 

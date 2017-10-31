@@ -110,7 +110,7 @@ describe('reporter.js', () => {
     it('returns results with master values', () => {
       const reporter = require('../reporter')
       expect.assertions(2)
-      return reporter(files, masterValues).then(() => {
+      const report = reporter(files, masterValues).then(() => {
         expect(buildMock.pass).toHaveBeenCalledWith(
           'Good job! bundle size < maxSize',
           expect.stringContaining(
@@ -126,10 +126,11 @@ describe('reporter.js', () => {
             )
           )
         )
-        expect(apiMock.set).toHaveBeenCalledWith(
-          files.map(f => ({ size: f.size, path: f.path }))
-        )
       })
+      expect(apiMock.set).toHaveBeenCalledWith(
+        files.map(f => ({ size: f.size, path: f.path }))
+      )
+      return report
     })
   })
 })
