@@ -4,6 +4,9 @@ const { repo, sha } = require('ci-env')
 const token = require('./token')
 const debug = require('./debug')
 
+let start = () => {
+  prettycli.warn('Cannot add github status without app token')
+}
 let pass = () => {} // noop
 let fail = () => process.exit(1)
 let error = () => process.exit(1)
@@ -26,10 +29,10 @@ if (token) {
     prettycli.error(message, { silent: true, label: 'ERROR' })
   }
 
-  build.start().catch(handleError)
+  start = () => build.start().catch(handleError)
   pass = (message, url) => build.pass(message, url).catch(handleError)
   fail = (message, url) => build.fail(message, url).catch(handleError)
   error = (message, url) => build.error(message, url).catch(handleError)
 }
 
-module.exports = { pass, fail, error }
+module.exports = { start, pass, fail, error }
