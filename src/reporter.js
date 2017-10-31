@@ -29,7 +29,7 @@ const setBuildStatus = ({
   debug('global message', globalMessage)
 }
 
-const report = (files, masterValues = {}) => {
+const reporter = (files, masterValues = {}) => {
   let fail = false
   let globalMessage
 
@@ -88,13 +88,6 @@ const report = (files, masterValues = {}) => {
         branch
       })
     })
-}
-
-const reporter = files => {
-  if (api.enabled) {
-    return api.get().then(masterValues => report(files, masterValues))
-  }
-  return report(files)
 }
 
 module.exports = reporter

@@ -106,16 +106,11 @@ describe('reporter.js', () => {
         all[f.path] = f.size
         return all
       }, {})
-      apiMock.enabled = true
-      apiMock.get = () =>
-        new Promise((resolve, reject) => {
-          process.nextTick(() => resolve(masterValues))
-        })
     })
     it('returns results with master values', () => {
       const reporter = require('../reporter')
       expect.assertions(2)
-      return reporter(files).then(() => {
+      return reporter(files, masterValues).then(() => {
         expect(buildMock.pass).toHaveBeenCalledWith(
           'Good job! bundle size < maxSize',
           expect.stringContaining(
