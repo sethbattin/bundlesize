@@ -2,11 +2,14 @@ const axios = require('axios')
 let { repo } = require('ci-env')
 const { sha, ci } = require('ci-env')
 const { warn } = require('prettycli')
+const querystring = require('querystring')
 
 const token = require('./token')
 const debug = require('./debug')
 
-const url = 'https://bundlesize-store.now.sh/values'
+const url = 'https://bundlesize-store.now.sh'
+
+const valuesUrl = () => `${url}/values`
 
 let enabled = false
 
@@ -26,7 +29,7 @@ const get = () => {
 
   repo = repo.replace(/\./g, '_')
   return axios
-    .get(`${url}?repo=${repo}&token=${token}`)
+    .get(`${valuesUrl()}?repo=${repo}&token=${token}`)
     .then(response => {
       const values = {}
       if (response && response.data && response.data.length) {
@@ -47,10 +50,12 @@ const set = values => {
     debug('saving values')
 
     axios
-      .post(url, { repo, token, sha, values })
+      .post(valuesUrl(), { repo, token, sha, values })
       .catch(error => console.log(error))
   }
 }
 
-const api = { enabled, set, get }
+const resultsUrl = info => `${url}/build?${querystring.stringify({ info })}`
+
+const api = { enabled, set, get, resultsUrl }
 module.exports = api

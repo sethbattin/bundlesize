@@ -58,31 +58,27 @@ describe('reporter.js', () => {
       it('calls build.pass with base branch', () => {
         const reporter = require('../reporter')
         expect.assertions(2)
-        return reporter(files).then(() => {
+        reporter(files)
+        Promise.resolve().then(() => {
           expect(buildMock.pass).toHaveBeenCalledWith(
             'Good job! bundle size < maxSize',
-            expect.stringContaining(
-              encodeURIComponent(
-                JSON.stringify(
-                  files.map(f => ({
-                    maxSize: f.maxSize,
-                    path: f.path,
-                    size: f.size
-                  }))
-                )
-              )
-            )
-          )
-          expect(apiMock.set).toHaveBeenCalledWith(
-            files.map(f => ({ size: f.size, path: f.path }))
+            files.map(f => ({
+              maxSize: f.maxSize,
+              path: f.path,
+              size: f.size
+            }))
           )
         })
+        expect(apiMock.set).toHaveBeenCalledWith(
+          files.map(f => ({ size: f.size, path: f.path }))
+        )
       })
       it('does not call api when not on the base branch', () => {
         cienvMock.branch = 'other'
         const reporter = require('../reporter')
         expect.assertions(1)
-        return reporter(files).then(() => {
+        reporter(files)
+        Promise.resolve().then(() => {
           expect(apiMock.set.mock.calls.length).toBe(0)
         })
       })
@@ -91,9 +87,8 @@ describe('reporter.js', () => {
       it('calls build.fail', () => {
         const reporter = require('../reporter')
         expect.assertions(1)
-        return reporter([
-          { maxSize: '10kb', path: 'fail.js', size: '20kb' }
-        ]).then(() => {
+        reporter([{ maxSize: '10kb', path: 'fail.js', size: '20kb' }])
+        Promise.resolve().then(() => {
           expect(buildMock.fail).toHaveBeenCalledTimes(1)
         })
       })
@@ -110,21 +105,15 @@ describe('reporter.js', () => {
     it('returns results with master values', () => {
       const reporter = require('../reporter')
       expect.assertions(2)
-      const report = reporter(files, masterValues).then(() => {
+      const report = Promise.resolve(reporter(files, masterValues)).then(() => {
         expect(buildMock.pass).toHaveBeenCalledWith(
           'Good job! bundle size < maxSize',
-          expect.stringContaining(
-            encodeURIComponent(
-              JSON.stringify(
-                files.map(f => ({
-                  maxSize: f.maxSize,
-                  path: f.path,
-                  size: f.size,
-                  master: masterValues[f.path]
-                }))
-              )
-            )
-          )
+          files.map(f => ({
+            maxSize: f.maxSize,
+            path: f.path,
+            size: f.size,
+            master: masterValues[f.path]
+          }))
         )
       })
       expect(apiMock.set).toHaveBeenCalledWith(

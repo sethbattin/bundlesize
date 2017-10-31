@@ -1,10 +1,7 @@
 const { error, warn, info } = require('prettycli')
 const ciEnv = require('ci-env')
-const { repo, commit_message, sha } = ciEnv
 const build = require('./build')
 const api = require('./api')
-const debug = require('./debug')
-const shortener = require('./shortener')
 const { baseBranch } = require('./config')
 const compare = require('./compare').default
 const STATUS = require('./compare').STATUS
@@ -46,25 +43,15 @@ const statusReporter = compared => {
     message = 'Good job! bundle size < maxSize'
   }
   /* prepare the build page */
-  const uriFiles = compared.map(f => {
+  const urlFiles = compared.map(f => {
     const { message, status, ...rest } = f
     return rest
   })
-  const params = encodeURIComponent(
-    JSON.stringify({
-      files: uriFiles,
-      repo,
-      branch: ciEnv.branch,
-      commit_message,
-      sha
-    })
-  )
-  const url = `https://bundlesize-store.now.sh/build?info=${params}`
-  debug('url before shortening', url)
+  // debug('url before shortening', url)
   if (failed(compared)) {
-    build.fail(message, url)
+    build.fail(message, urlFiles)
   } else {
-    build.pass(message, url)
+    build.pass(message, urlFiles)
   }
 }
 
@@ -77,15 +64,9 @@ const reporter = (files, masterValues = {}) => {
 
   apiReporter(compared)
 
-  return shortener
-    .shorten('temp')
-    .then(res => {
-      statusReporter(compared)
-    })
-    .catch(err => {
-      debug('err while shortening', err)
-      statusReporter(compared)
-    })
+  statusReporter(compared)
+
+  return compared
 }
 
 module.exports = reporter
