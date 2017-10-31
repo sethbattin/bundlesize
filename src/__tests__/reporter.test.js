@@ -56,7 +56,7 @@ describe('reporter.js', () => {
     // apiMock.enabled is correct
     describe('on success', () => {
       it('calls build.pass with base branch', () => {
-        const reporter = require('../reporter')
+        const { reporter } = require('../reporter')
         expect.assertions(2)
         reporter(files)
         Promise.resolve().then(() => {
@@ -75,7 +75,7 @@ describe('reporter.js', () => {
       })
       it('does not call api when not on the base branch', () => {
         cienvMock.branch = 'other'
-        const reporter = require('../reporter')
+        const { reporter } = require('../reporter')
         expect.assertions(1)
         reporter(files)
         Promise.resolve().then(() => {
@@ -85,7 +85,7 @@ describe('reporter.js', () => {
     })
     describe('on failure', () => {
       it('calls build.fail', () => {
-        const reporter = require('../reporter')
+        const { reporter } = require('../reporter')
         expect.assertions(1)
         reporter([{ maxSize: '10kb', path: 'fail.js', size: '20kb' }])
         Promise.resolve().then(() => {
@@ -103,7 +103,7 @@ describe('reporter.js', () => {
       }, {})
     })
     it('returns results with master values', () => {
-      const reporter = require('../reporter')
+      const { reporter } = require('../reporter')
       expect.assertions(2)
       const report = Promise.resolve(reporter(files, masterValues)).then(() => {
         expect(buildMock.pass).toHaveBeenCalledWith(

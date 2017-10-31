@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const { inspect } = require('util')
 const program = require('commander')
-const reporter = require('../src/reporter')
+const { reporter } = require('../src/reporter')
 const gzip = require('gzip-size')
 const bytes = require('bytes')
 const readStream = require('../src/readStream')

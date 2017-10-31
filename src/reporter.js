@@ -3,8 +3,7 @@ const ciEnv = require('ci-env')
 const build = require('./build')
 const api = require('./api')
 const { baseBranch } = require('./config')
-const compare = require('./compare').default
-const STATUS = require('./compare').STATUS
+const bytes = require('bytes')
 
 const cliReporter = compared => {
   compared.map(file => {
@@ -55,6 +54,52 @@ const statusReporter = compared => {
   }
 }
 
+const compare = (files, masterValues = {}) => {
+  const results = files.map(file => {
+    const { path, size, maxSize } = file
+    const master = masterValues[path]
+    const value = `${path}: ${bytes(size)} gzip`
+    let message = ''
+
+    const result = {
+      maxSize,
+      path,
+      size,
+      status: STATUS.PASS
+    }
+
+    if (size > maxSize) {
+      result.status = STATUS.FAIL
+      message = `> max size ${bytes(maxSize)}`
+    } else if (size === maxSize) {
+      message = `, equals expected limit ${bytes(maxSize)}.`
+    } else if (!master) {
+      message = `< max size ${bytes(maxSize)}`
+    } else if (size < master) {
+      message = `, ${bytes(
+        master - size
+      )} smaller than ${baseBranch}, good job!`
+    } else if (size > master) {
+      result.status = STATUS.WARN
+      message = `, ${bytes(size - master)} larger than ${baseBranch}, careful!`
+    } else {
+      message = `, unchanged from ${baseBranch}.`
+    }
+    result.message = `${value}${message}`
+    if (master) {
+      result.master = master
+    }
+    return result
+  })
+  return results
+}
+
+const STATUS = {
+  PASS: 'PASS',
+  FAIL: 'FAIL',
+  WARN: 'WARN'
+}
+
 const failed = compared => compared.some(v => v.status === STATUS.FAIL)
 
 const reporter = (files, masterValues = {}) => {
@@ -69,4 +114,9 @@ const reporter = (files, masterValues = {}) => {
   return compared
 }
 
-module.exports = reporter
+module.exports = {
+  default: compare,
+  reporter,
+  compare,
+  STATUS
+}
