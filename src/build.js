@@ -8,7 +8,7 @@ let pass = () => {} // noop
 let fail = () => process.exit(1)
 let error = () => process.exit(1)
 
-const label = 'bundlesize'
+const label = 'bundle-report'
 const description = 'Checking output size...'
 const meta = { repo, sha, token, label, description }
 

@@ -60,3 +60,4 @@ typings/
 # Yarn
 yarn.lock
 store/yarn.lock
+tmp

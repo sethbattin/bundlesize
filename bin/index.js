@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 const { inspect } = require('util')
-const files = require('./src/files')
-const reporter = require('./src/reporter')
-const build = require('./src/build')
-const input = require('./src/input')
+const files = require('../src/files')
+const reporter = require('../src/reporter')
+const build = require('../src/build')
+const input = require('../src/input')
 
 input.parse(process.argv)
 

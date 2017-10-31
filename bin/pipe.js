@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 const { inspect } = require('util')
 const program = require('commander')
-const reporter = require('./src/reporter')
+const reporter = require('../src/reporter')
 const gzip = require('gzip-size')
 const bytes = require('bytes')
-const readStream = require('./src/readStream')
+const readStream = require('../src/readStream')
 const { error } = require('prettycli')
-const build = require('./src/build')
-const debug = require('./src/debug')
+const build = require('../src/build')
+const debug = require('../src/debug')
 
 if (process.stdin.isTTY) {
-  error('bundlesize-pipe executable is meant for usage with piped data.')
+  error('bundle-report-pipe executable is meant for usage with piped data.')
 }
 
 program
