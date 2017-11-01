@@ -9,9 +9,9 @@ const api = require('../src/api')
 
 input.parse(process.argv)
 if (api.enabled) {
-  api.get().then(masterValues => reporter(files, masterValues))
+  api.get().then(masterValues => reporter(files(), masterValues))
 } else {
-  reporter(files)
+  reporter(files())
 }
 
 process.on('unhandledRejection', function (reason) {

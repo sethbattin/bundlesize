@@ -6,22 +6,25 @@ const { error } = require('prettycli')
 const config = require('./config')
 const debug = require('./debug')
 
-const files = []
+const files = (input = config.files, name = config.name) => {
+  const files = []
 
-config.files.map(file => {
-  const paths = glob.sync(file.path)
-  if (!paths.length) {
-    error(`There is no matching file for ${file.path} in ${process.cwd()}`, {
-      silent: true
-    })
-  } else {
-    paths.map(path => {
-      const size = gzip.sync(fs.readFileSync(path, 'utf8'))
-      const maxSize = bytes(file.maxSize) || Infinity
-      files.push({ maxSize, path, size })
-    })
-  }
-})
+  input.map(file => {
+    const paths = glob.sync(file.path)
+    if (!paths.length) {
+      error(`There is no matching file for ${file.path} in ${process.cwd()}`, {
+        silent: true
+      })
+    } else {
+      paths.map(path => {
+        const size = gzip.sync(fs.readFileSync(path, 'utf8'))
+        const maxSize = bytes(file.maxSize) || Infinity
+        files.push({ maxSize, path, size })
+      })
+    }
+  })
+  return files
+}
 
 debug('files', files)
 
