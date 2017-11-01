@@ -16,7 +16,7 @@ let globMock = null
 
 const mockFileArray = jest.fn()
 jest.mock('../config', () => ({
-  files: { map: mockFileArray, name: 'unused' }
+  files: { reduce: mockFileArray, name: 'unused' }
 }))
 
 describe('files.js', () => {

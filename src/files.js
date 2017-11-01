@@ -2,26 +2,24 @@ const fs = require('fs')
 const bytes = require('bytes')
 const glob = require('glob')
 const gzip = require('gzip-size')
-const { error } = require('prettycli')
 const config = require('./config')
 const debug = require('./debug')
 
+const pathName = (path, name) => {
+  return path // TODO: process name
+}
+
 const files = (input = config.files, name = config.name) => {
-  const files = []
-  input.map(file => {
-    const paths = glob.sync(file.path)
-    if (!paths.length) {
-      error(`There is no matching file for ${file.path} in ${process.cwd()}`, {
-        silent: true
-      })
-    } else {
-      paths.map(path => {
-        const size = gzip.sync(fs.readFileSync(path, 'utf8'))
-        const maxSize = bytes(file.maxSize) || Infinity
-        files.push({ maxSize, path, size })
-      })
-    }
-  })
+  const files = input.reduce((all, file) => {
+    const paths = glob.sync(file.path).map(expand => {
+      const size = gzip.sync(fs.readFileSync(expand, 'utf8'))
+      const name = pathName(expand, file.name || name)
+      const maxSize = bytes(file.maxSize) || Infinity
+      return { path: expand, name, size, maxSize }
+    })
+    return all.concat(paths)
+  }, [])
+
   return files
 }
 
