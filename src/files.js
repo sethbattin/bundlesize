@@ -8,7 +8,6 @@ const debug = require('./debug')
 
 const files = (input = config.files, name = config.name) => {
   const files = []
-
   input.map(file => {
     const paths = glob.sync(file.path)
     if (!paths.length) {
