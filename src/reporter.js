@@ -43,8 +43,12 @@ const statusReporter = compared => {
   }
   /* prepare the build page */
   const urlFiles = compared.map(f => {
-    const { message, status, name, maxSize, size, path } = f // eslint-disable-line no-unused-vars
-    return { maxSize, size, path: name }
+    const { name, maxSize, size } = f
+    const file = { maxSize, size, path: name }
+    if (f.master) {
+      file.master = f.master
+    }
+    return file
   })
   // debug('url before shortening', url)
   if (failed(compared)) {
@@ -57,7 +61,7 @@ const statusReporter = compared => {
 const compare = (files, masterValues = {}) => {
   const results = files.map(file => {
     const { path, size, maxSize, name } = file
-    const master = masterValues[path]
+    const master = masterValues[name]
     const value = `${path}: ${bytes(size)} gzip`
     let message = ''
 
