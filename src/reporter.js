@@ -27,7 +27,7 @@ const apiReporter = compared => {
     ciEnv.event === 'push' &&
     ciEnv.branch === baseBranch
   ) {
-    const values = compared.map(file => ({ path: file.path, size: file.size }))
+    const values = compared.map(file => ({ path: file.name, size: file.size }))
     api.set(values)
   }
 }
@@ -43,8 +43,8 @@ const statusReporter = compared => {
   }
   /* prepare the build page */
   const urlFiles = compared.map(f => {
-    const { message, status, ...rest } = f
-    return rest
+    const { message, status, name, ...rest } = f
+    return Object.assign({}, rest, { path: name })
   })
   // debug('url before shortening', url)
   if (failed(compared)) {
