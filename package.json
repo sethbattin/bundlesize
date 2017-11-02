@@ -52,12 +52,21 @@
   "bundleReport": {
     "files": [
       {
-        "path": "./bin/index.js",
-        "maxSize": "600B"
+        "path": "./bin/*",
+        "maxSize": "600B",
+        "name": "cli-bin"
       },
       {
         "path": "./src/files.js",
         "maxSize": "600B"
+      },
+      {
+        "path": "./src/re*.js",
+        "maxSize": "700B",
+        "replace": {
+          "pattern": "\\./src/(.*)\\.js",
+          "replacement": "$1"
+        }
       }
     ],
     "baseBranch": "parallel-dev"
