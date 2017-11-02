@@ -43,8 +43,8 @@ const statusReporter = compared => {
   }
   /* prepare the build page */
   const urlFiles = compared.map(f => {
-    const { message, status, name, ...rest } = f
-    return Object.assign({}, rest, { path: name })
+    const { message, status, name, maxSize, size, path } = f // eslint-disable-line no-unused-vars
+    return { maxSize, size, path: name }
   })
   // debug('url before shortening', url)
   if (failed(compared)) {
