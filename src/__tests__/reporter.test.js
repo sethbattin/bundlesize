@@ -30,8 +30,8 @@ describe('reporter.js', () => {
     baseBranch: 'master'
   }
   const files = [
-    { maxSize: bytes('20kb'), path: './foo.js', size: 20000 },
-    { maxSize: bytes('10kb'), path: './bar.js', size: 10000 }
+    { maxSize: bytes('20kb'), path: './foo.js', size: 20000, name: 'foo' },
+    { maxSize: bytes('10kb'), path: './bar.js', size: 10000, name: 'bar' }
   ]
   beforeEach(() => {
     apiMock = {
@@ -64,13 +64,13 @@ describe('reporter.js', () => {
             'Good job! bundle size < maxSize',
             files.map(f => ({
               maxSize: f.maxSize,
-              path: f.path,
+              path: f.name,
               size: f.size
             }))
           )
         })
         expect(apiMock.set).toHaveBeenCalledWith(
-          files.map(f => ({ size: f.size, path: f.path }))
+          files.map(f => ({ size: f.size, path: f.name }))
         )
       })
       it('does not call api when not on the base branch', () => {
@@ -110,14 +110,14 @@ describe('reporter.js', () => {
           'Good job! bundle size < maxSize',
           files.map(f => ({
             maxSize: f.maxSize,
-            path: f.path,
+            path: f.name,
             size: f.size,
-            master: masterValues[f.path]
+            master: masterValues[f.name]
           }))
         )
       })
       expect(apiMock.set).toHaveBeenCalledWith(
-        files.map(f => ({ size: f.size, path: f.path }))
+        files.map(f => ({ size: f.size, path: f.name }))
       )
       return report
     })

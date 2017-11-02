@@ -56,7 +56,7 @@ const statusReporter = compared => {
 
 const compare = (files, masterValues = {}) => {
   const results = files.map(file => {
-    const { path, size, maxSize } = file
+    const { path, size, maxSize, name } = file
     const master = masterValues[path]
     const value = `${path}: ${bytes(size)} gzip`
     let message = ''
@@ -65,6 +65,7 @@ const compare = (files, masterValues = {}) => {
       maxSize,
       path,
       size,
+      name,
       status: STATUS.PASS
     }
 
