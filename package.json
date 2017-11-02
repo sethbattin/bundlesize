@@ -61,10 +61,18 @@
         "maxSize": "600B"
       },
       {
-        "path": "./src/re*.js",
-        "maxSize": "700B",
+        "path": "./src/config.js",
+        "maxSize": "3KB",
         "replace": {
-          "pattern": "\\./src/(.*)\\.js",
+          "pattern": "./src/",
+          "replacement": ""
+        }
+      },
+      {
+        "path": "./src/re*.js",
+        "maxSize": "2KB",
+        "replace": {
+          "pattern": ["\\./src/(.*)\\.js"],
           "replacement": "$1"
         }
       }
