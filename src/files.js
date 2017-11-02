@@ -6,7 +6,7 @@ const config = require('./config')
 const debug = require('./debug')
 
 const getReplacer = opts => {
-  if (opts && opts.pattern && opts.replacement) {
+  if (opts && opts.pattern && opts.hasOwnProperty('replacement')) {
     const pattern =
       Array.isArray(opts.pattern) && opts.pattern.length
         ? new RegExp(opts.pattern[0], opts.pattern[1] || '')

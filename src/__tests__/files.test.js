@@ -31,6 +31,9 @@ describe('files.js', () => {
       require('../files')()
       expect(mockFileArray).toBeCalled()
     })
+    it('uses config.replace as the second argument', () => {
+      // trust me?
+    })
   })
   describe('configurability', () => {
     // set up test mocks for paths, optionally specifying glob results
@@ -60,41 +63,88 @@ describe('files.js', () => {
         [['a-0.js', 'a-1.js']]
       )
       expect(results).toHaveLength(2)
-      expect(results[0]).toMatchObject({
-        maxSize: 13,
-        path: 'a-0.js',
-        size: FILE_SIZE
-      })
-      expect(results[1]).toMatchObject({
-        maxSize: 13,
-        path: 'a-1.js',
-        size: FILE_SIZE
-      })
+      expect(results[0]).toMatchObject({ path: 'a-0.js' })
+      expect(results[1]).toMatchObject({ path: 'a-1.js' })
     })
     describe('name property', () => {
-      it('passes through a string name on a single path', () => {})
-      it('expands a string name with a numeral for expanded paths', () => {})
-      it('checks for duplicate names and errors out', () => {})
+      it('passes through a string name on a single path', () => {
+        const results = filesGlobsResults([{ path: 'a.js', name: 'b' }])
+        expect(results[0]).toMatchObject({ path: 'a.js', name: 'b' })
+      })
+      it('expands a string name with a numeral for expanded paths', () => {
+        const results = filesGlobsResults(
+          [{ path: 'a*.js', name: 'path' }],
+          [['a1.js', 'a2.js']]
+        )
+        expect(results[0]).toMatchObject({ path: 'a1.js', name: 'path' })
+        expect(results[1]).toMatchObject({ path: 'a2.js', name: 'path_1' })
+      })
     })
     describe('replace property', () => {
-      it('creates a name from the path using a string.replace argument pair object', () => {
+      const replacer = (pattern, replacement) => {
         const file = {
           path: 'long-file-name.js',
           replace: {
-            pattern: 'long-file',
-            replacement: 'short'
+            pattern,
+            replacement
           }
         }
+        return file
+      }
+      it('creates a name from the path using a string.replace object', () => {
+        const file = replacer('long-file', 'short')
         const results = filesGlobsResults([file])
-        expect(results[0]).toEqual({
-          maxSize: 13,
+        expect(results[0]).toMatchObject({
           path: 'long-file-name.js',
-          size: FILE_SIZE,
           name: 'short-name.js'
         })
       })
-      it('it accepts Regexes and functions', () => {})
-      it('it converts glob results', () => {})
+      it('it accepts RegExps and replacement patterns', () => {
+        const file1 = replacer(/(.*)-file-name/, '$1')
+        const file2 = replacer(/(.*)-file-name/, '$1')
+        file2.path = 'ugly-file-name.js'
+        const results = filesGlobsResults([file1, file2])
+        expect(results[0]).toHaveProperty('name', 'long.js')
+        expect(results[1]).toHaveProperty('name', 'ugly.js')
+      })
+      it('it accepts RegExps and replacement functions', () => {
+        const file = replacer(
+          /(.*)-file-name/,
+          (match, group1, offset) => `${group1}_${match}_${offset}`
+        )
+        const results = filesGlobsResults([file])
+        expect(results[0]).toHaveProperty('name', 'long_long-file-name_0.js')
+      })
+      it('it converts glob results', () => {
+        const file = replacer(/(.*)-file-name/, '$1')
+        const glob = ['big-file-name.js', 'red-file-name.js']
+        const results = filesGlobsResults([file], [glob])
+        expect(results[0]).toHaveProperty('name', 'big.js')
+        expect(results[1]).toHaveProperty('name', 'red.js')
+      })
+      it('supercedes a name property', () => {
+        const file = replacer('file-name', '')
+        file.name = 'ignored'
+        const results = filesGlobsResults([file])
+        expect(results[0]).toHaveProperty('name', 'long-.js')
+      })
+      it('uses a single pattern argument for all paths', () => {
+        const files = [
+          { path: 'a.js', maxSize: '13B' },
+          { path: 'b*.js', maxSize: '13B' }
+        ]
+        globMock.mockReturnValueOnce(['aF.js'])
+        globMock.mockReturnValueOnce(['bGF.js', 'bHF.js'])
+        const replace = {
+          pattern: 'F.js',
+          replacement: ''
+        }
+        const results = require('../files')(files, replace)
+        expect(results).toHaveLength(3)
+        expect(results[0]).toHaveProperty('name', 'a')
+        expect(results[1]).toHaveProperty('name', 'bG')
+        expect(results[2]).toHaveProperty('name', 'bH')
+      })
     })
   })
 })
