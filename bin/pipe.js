@@ -30,11 +30,12 @@ process.stdin.setEncoding('utf8')
 readStream(process.stdin).then(data => {
   const size = gzip.sync(data)
   const maxSize = bytes(config.maxSize) || Infinity
+  const name = config.name || 'data'
   const file = {
-    path: config.name,
+    path: name,
     maxSize,
     size,
-    name: config.name
+    name
   }
   debug('file', file)
   reporter([file])
