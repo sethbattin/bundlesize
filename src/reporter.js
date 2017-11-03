@@ -75,11 +75,11 @@ const compare = (files, masterValues = {}) => {
 
     if (size > maxSize) {
       result.status = STATUS.FAIL
-      message = `> max size ${bytes(maxSize)}`
+      message = ` > max size ${bytes(maxSize)}`
     } else if (size === maxSize) {
       message = `, equals expected limit ${bytes(maxSize)}.`
     } else if (!master) {
-      message = `< max size ${bytes(maxSize)}`
+      message = ` < max size ${bytes(maxSize)}`
     } else if (size < master) {
       message = `, ${bytes(
         master - size
@@ -123,5 +123,8 @@ module.exports = {
   default: compare,
   reporter,
   compare,
+  cliReporter,
+  statusReporter,
+  apiReporter,
   STATUS
 }
