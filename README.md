@@ -37,9 +37,9 @@ npx bundle-report
 
 #### configuration
 
-&nbsp;
+1) Add the path and gzip maxSize in your `package.json`
 
-#### 1) Add the path and gzip maxSize in your `package.json`
+##### Basic
 
 ```json
 {
@@ -55,10 +55,10 @@ npx bundle-report
   }
 }
 ```
-
+##### globs
 `bundle-report` also supports [glob patterns](https://github.com/isaacs/node-glob)
 
-Example:
+This makes it great for using with applications that are bundled with another tool. It will match multiple files if necessary and create a new row for each file.
 
 ```json
 {
@@ -77,9 +77,42 @@ Example:
 }
 ```
 
-This makes it great for using with applications that are bundled with another tool. It will match multiple files if necessary and create a new row for each file.
+##### named output
+Some bundle files may contain irrelevant path info, or simply be too long, or contain hashes (which prevents comparing built-to-build).  There are two ways to specify another name for the file.  For more examples, see [this project's package.json](https://github.com/sethbattin/bundle-report/blob/parallel-dev/package.json#L53-L79).
 
-&nbsp;
+1. Each item in the `files` option may contain a `name` property.  For globs with multiple entries, this name will receive a numeral suffix
+
+```json
+{
+  "bundleReport": {
+    "files": [
+      {"path": "webpack-with-hash*.js", "maxSize": "3KB", "name": "webpack"}
+    ]
+  }
+}
+```
+2. You may specify a `replace` pattern for substring or regex replacement.  The pattern may be specified at the top level config or for each entry in 'files'.  The replacement will be applied to the path of the file (after glob expansion), and the result will become the `name` property for that file.  (`name` is superceded by `replace`)
+
+The `replace` options requires two properties, `pattern` and `replacement`.  These properties become the first and second argument to [`String.prototype.replace`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace).  If `pattern` contains an array, then its first element and optional second element are passed as arguments to [`new RegExp`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp).  (This permits `RegExp` via package.json or yaml strings.  If you use a module as configuration [in progress](https://github.com/sethbattin/bundle-report/issues/5), then you may specify a RegExp directly, as well as a function for the `replacement` property)
+
+This example uses a regular expression to name each file starting with `re`, and removes its path and file extension.
+
+```json
+{
+  "bundleReport": {
+    "files": [
+      {                                    
+        "path": "./src/re*.js",
+        "maxSize": "2KB",
+        "replace": {
+          "pattern": ["\\./src/(.*)\\.js"],
+          "replacement": "$1"
+        }
+      }
+    ]
+  }
+}
+
 
 #### 2) build status
 
