@@ -62,7 +62,7 @@ This makes it great for using with applications that are bundled with another to
 
 ```json
 {
-  "bundle-report": [
+  "bundleReport": {
     "files": [
       {
         "path": "./dist/vendor-*.js",
@@ -101,7 +101,7 @@ This example uses a regular expression to name each file starting with `re`, and
 {
   "bundleReport": {
     "files": [
-      {                                    
+      {
         "path": "./src/re*.js",
         "maxSize": "2KB",
         "replace": {
