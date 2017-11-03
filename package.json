@@ -53,7 +53,7 @@
     "files": [
       {
         "path": "./bin/*",
-        "maxSize": "600B",
+        "maxSize": "610B",
         "name": "cli-bin"
       },
       {
