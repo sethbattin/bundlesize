@@ -33,7 +33,8 @@ readStream(process.stdin).then(data => {
   const file = {
     path: config.name,
     maxSize,
-    size
+    size,
+    name: config.name
   }
   debug('file', file)
   reporter([file])
