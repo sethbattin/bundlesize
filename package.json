@@ -14,7 +14,10 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "test": "scripts/testSelf.sh && scripts/testPipe.sh && jest",
+    "test": "npm run test:self && npm run test:pipe && npm run test:unit",
+    "test:self": "scripts/testSelf.sh",
+    "test:pipe": "scripts/testPipe.sh",
+    "test:unit": "jest",
     "lint": "eslint src store/*.js",
     "postpack": "rm -rf tmp && scripts/testPack.sh"
   },
@@ -49,12 +52,29 @@
   "bundleReport": {
     "files": [
       {
-        "path": "./bin/index.js",
-        "maxSize": "600B"
+        "path": "./bin/*",
+        "maxSize": "600B",
+        "name": "cli-bin"
       },
       {
         "path": "./src/files.js",
         "maxSize": "600B"
+      },
+      {
+        "path": "./src/config.js",
+        "maxSize": "3KB",
+        "replace": {
+          "pattern": "./src/",
+          "replacement": ""
+        }
+      },
+      {
+        "path": "./src/re*.js",
+        "maxSize": "2KB",
+        "replace": {
+          "pattern": ["\\./src/(.*)\\.js"],
+          "replacement": "$1"
+        }
       }
     ],
     "baseBranch": "parallel-dev"

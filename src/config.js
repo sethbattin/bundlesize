@@ -35,6 +35,7 @@ if (!packageJSONconfig && !cliConfig) {
 
 const defaultConfig = {
   files: [],
+  name: '',
   baseBranch: 'master'
 }
 let config

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const { inspect } = require('util')
 const program = require('commander')
-const reporter = require('../src/reporter')
+const { reporter } = require('../src/reporter')
 const gzip = require('gzip-size')
 const bytes = require('bytes')
 const readStream = require('../src/readStream')
@@ -30,10 +30,12 @@ process.stdin.setEncoding('utf8')
 readStream(process.stdin).then(data => {
   const size = gzip.sync(data)
   const maxSize = bytes(config.maxSize) || Infinity
+  const name = config.name || 'data'
   const file = {
-    path: config.name,
+    path: name,
     maxSize,
-    size
+    size,
+    name
   }
   debug('file', file)
   reporter([file])
