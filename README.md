@@ -112,7 +112,7 @@ This example uses a regular expression to name each file starting with `re`, and
     ]
   }
 }
-
+```
 
 #### 2) build status
 
