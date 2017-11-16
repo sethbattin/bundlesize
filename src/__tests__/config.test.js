@@ -65,13 +65,13 @@ describe('config.js', () => {
     })
     it('accepts a cli argument', () => {
       mockCommander.config = 'config.file'
-      readMock.mockReturnValueOnce('{}')
+      readMock.mockReturnValueOnce('{"nonempty": true}')
       require('../config')
       expect(readMock).toBeCalledWith('config.file')
     })
     it('accepts a string setting in package.json', () => {
       mockPDJ.bundleReport = 'config.phial'
-      readMock.mockReturnValueOnce('{}')
+      readMock.mockReturnValueOnce('{"nonempty": true}')
       require('../config')
       expect(readMock).toBeCalledWith('config.phial')
     })
