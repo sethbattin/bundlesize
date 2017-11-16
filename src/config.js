@@ -1,18 +1,31 @@
-const readPkgUp = require('read-pkg-up')
-
-const pkg = readPkgUp.sync().pkg
+const { pkg, path: projPath } = require('read-pkg-up').sync()
+const { dirname, join } = require('path')
+const { readFileSync } = require('fs')
+const jsYaml = require('js-yaml')
 /* Config from CLI */
 const program = require('./input')
-const { error } = require('prettycli')
 const debug = require('./debug')
 
 /* Config from package.json */
 const packageJSONconfig = pkg.bundleReport
 
-let cliConfig
+const readConfigFile = path => {
+  try {
+    return require(path)
+  } catch (e) {}
+
+  try {
+    const content = readFileSync(path)
+    return jsYaml.safeLoad(content)
+  } catch (e) {}
+
+  return {}
+}
+
+let cliConfig = {}
 
 if (program.files) {
-  cliConfig = [
+  cliConfig.files = [
     {
       path: program.files,
       maxSize: program.maxSize
@@ -20,37 +33,46 @@ if (program.files) {
   ]
 }
 
-/* Send to readme if no configuration is provided */
-
-if (!packageJSONconfig && !cliConfig) {
-  error(
-    `Config not found.
-
-    You can read about the configuration options here:
-    https://github.com/sethbattin/bundle-report#configuration
-  `,
-    { silent: true }
-  )
-}
-
-const defaultConfig = {
-  files: [],
-  name: '',
-  baseBranch: 'master'
-}
 let config
-if (cliConfig) {
-  config = {
-    files: cliConfig
+let configFile
+
+const loadOrThrow = path => {
+  const file = readConfigFile(path)
+  if (!Object.keys(file).length) {
+    const err = `could not read config file: '${path}'`
+    throw err
   }
-} else if (Array.isArray(packageJSONconfig)) {
-  config = Object.assign({}, defaultConfig, { files: packageJSONconfig })
+  return file
+}
+
+if (program.config) {
+  configFile = loadOrThrow(program.config)
+} else if (typeof packageJSONconfig === 'string') {
+  configFile = loadOrThrow(packageJSONconfig)
+} else if (packageJSONconfig && packageJSONconfig.config) {
+  configFile = loadOrThrow(packageJSONconfig.config)
 } else {
-  config = Object.assign({}, defaultConfig, packageJSONconfig || {})
+  configFile = readConfigFile(join(dirname(projPath), '.bundlereport.rc'))
+}
+
+const defaultConfig = readConfigFile(join(__dirname, 'default.bundlereport.rc'))
+
+if (Array.isArray(packageJSONconfig)) {
+  config = Object.assign(
+    {},
+    defaultConfig,
+    { files: packageJSONconfig },
+    configFile,
+    cliConfig
+  )
+} else {
+  const pdj = typeof packageJSONconfig === 'string' ? {} : packageJSONconfig
+  config = Object.assign({}, defaultConfig, pdj || {}, configFile, cliConfig)
 }
 
 debug('cli config', cliConfig)
 debug('package json config', packageJSONconfig)
+debug('config file', configFile)
 debug('selected config', config)
 
 module.exports = config

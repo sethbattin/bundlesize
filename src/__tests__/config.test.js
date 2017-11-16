@@ -1,23 +1,24 @@
-jest.mock('read-pkg-up', () => {
-  const mockPDJ = {
-    bundleReport: [{ path: 'index.js', maxSize: '750B' }]
-  }
-  return {
-    sync: () => ({ pkg: mockPDJ }),
-    mockPDJ
-  }
-})
-
+const dirname = require('path').dirname
 describe('config.js', () => {
   let mockCommander
+  let mockPDJ
   beforeEach(() => {
     jest.resetModules()
     mockCommander = {
       option: () => mockCommander,
       parse: () => {},
       files: 'cli.js',
-      maxSize: '30KB'
+      maxSize: '30KB',
+      config: null
     }
+    mockPDJ = {
+      bundleReport: [{ path: 'index.js', maxSize: '750B' }]
+    }
+    jest.doMock('read-pkg-up', () => {
+      return {
+        sync: () => ({ pkg: mockPDJ, path: dirname(dirname(__dirname)) })
+      }
+    })
   })
   it('has a files property', () => {
     const config = require('../config')
@@ -39,20 +40,57 @@ describe('config.js', () => {
     })
     it('uses package.json setting for "bundleReport"', () => {
       jest.doMock('commander', () => mockCommander)
-      const readPkgUp = require('read-pkg-up')
       const config = require('../config')
-      expect(config.files).toMatchObject(readPkgUp.mockPDJ.bundleReport)
+      expect(config.files).toMatchObject(mockPDJ.bundleReport)
     })
     it('permits key-value config in package.json', () => {
       jest.doMock('commander', () => mockCommander)
-      const readPkgUp = require('read-pkg-up')
       const files = [{ path: 'new.js', maxSize: '50MB' }]
-      readPkgUp.mockPDJ.bundleReport = {
+      mockPDJ.bundleReport = {
         files: files,
         other: 'something new'
       }
       const config = require('../config')
       expect(config.files).toMatchObject(files)
+    })
+  })
+  describe('loads a config file', () => {
+    let readMock
+    beforeEach(() => {
+      readMock = jest.fn()
+      mockCommander.files = null
+      jest.doMock('fs', () => ({
+        readFileSync: readMock
+      }))
+    })
+    it('accepts a cli argument', () => {
+      mockCommander.config = 'config.file'
+      readMock.mockReturnValueOnce('{"nonempty": true}')
+      require('../config')
+      expect(readMock).toBeCalledWith('config.file')
+    })
+    it('accepts a string setting in package.json', () => {
+      mockPDJ.bundleReport = 'config.phial'
+      readMock.mockReturnValueOnce('{"nonempty": true}')
+      require('../config')
+      expect(readMock).toBeCalledWith('config.phial')
+    })
+    it('parses yml', () => {
+      mockPDJ.bundleReport = 'config.yaml'
+      readMock.mockReturnValueOnce(`
+baseBranch: ymldevelop
+files:
+  - name: a.js
+    path: src/build/a.js
+  - name: b.js
+    path: src/b.js
+`)
+      const config = require('../config')
+      expect(config.baseBranch).toEqual('ymldevelop')
+      expect(config.files).toEqual([
+        { name: 'a.js', path: 'src/build/a.js' },
+        { name: 'b.js', path: 'src/b.js' }
+      ])
     })
   })
 })

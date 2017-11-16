@@ -37,15 +37,21 @@ npx bundle-report
 
 #### configuration
 
-1) Add the path and gzip maxSize in your `package.json`
+Specify configuration through any method below.  Files may be yaml, json, or js modules, and package.json may contain an object.
 
-##### Basic
+1. Specify cli option `--config [file name]` to point at any config file.
+2. Create a config file ".bundlereport.rc" (see the exmaple in src/default.bundlereport.rc)
+3. Specify `package.json` key "bundleReport" with a string config file path.
+4. Add a settings object in `package.json` under key "bundleReport".
+5. Specify property "config" in the object at `package.json`
+
+##### Basic Settings
 
 ```json
 {
   "name": "your cool library",
   "version": "1.1.2",
-  "bundle-report": {
+  "bundleReport": {
     "files": [
       {
         "path": "./dist.js",
