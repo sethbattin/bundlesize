@@ -37,6 +37,7 @@ let config
 let configFile
 if (program.config) {
   configFile = readConfigFile(program.config)
+  throw `could not read config file: '${program.config}'`
 } else if (typeof packageJSONconfig === 'string') {
   configFile = readConfigFile(packageJSONconfig)
 } else if (packageJSONconfig && packageJSONconfig.config) {
