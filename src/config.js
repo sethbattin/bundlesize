@@ -35,13 +35,22 @@ if (program.files) {
 
 let config
 let configFile
+
+const loadOrThrow = path => {
+  const file = readConfigFile(path)
+  if (!Object.keys(file).length) {
+    const err = `could not read config file: '${path}'`
+    throw err
+  }
+  return file
+}
+
 if (program.config) {
-  configFile = readConfigFile(program.config)
-  throw `could not read config file: '${program.config}'`
+  configFile = loadOrThrow(program.config)
 } else if (typeof packageJSONconfig === 'string') {
-  configFile = readConfigFile(packageJSONconfig)
+  configFile = loadOrThrow(packageJSONconfig)
 } else if (packageJSONconfig && packageJSONconfig.config) {
-  configFile = readConfigFile(packageJSONconfig.config)
+  configFile = loadOrThrow(packageJSONconfig.config)
 } else {
   configFile = readConfigFile(join(dirname(projPath), '.bundlereport.rc'))
 }
@@ -57,13 +66,8 @@ if (Array.isArray(packageJSONconfig)) {
     cliConfig
   )
 } else {
-  config = Object.assign(
-    {},
-    defaultConfig,
-    packageJSONconfig || {},
-    configFile,
-    cliConfig
-  )
+  const pdj = typeof packageJSONconfig === 'string' ? {} : packageJSONconfig
+  config = Object.assign({}, defaultConfig, pdj || {}, configFile, cliConfig)
 }
 
 debug('cli config', cliConfig)
