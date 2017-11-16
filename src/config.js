@@ -39,7 +39,7 @@ if (program.config) {
   configFile = readConfigFile(program.config)
 } else if (typeof packageJSONconfig === 'string') {
   configFile = readConfigFile(packageJSONconfig)
-} else if (packageJSONconfig.config) {
+} else if (packageJSONconfig && packageJSONconfig.config) {
   configFile = readConfigFile(packageJSONconfig.config)
 } else {
   configFile = readConfigFile(join(dirname(projPath), '.bundlereport.rc'))
