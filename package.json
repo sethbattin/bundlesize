@@ -1,6 +1,6 @@
 {
   "name": "bundle-report",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Track your bundle size over time",
   "repository": {
     "type": "git",
