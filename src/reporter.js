@@ -6,6 +6,9 @@ const { baseBranch } = require('./config')
 const bytes = require('bytes')
 
 const cliReporter = compared => {
+  if (!compared.length) {
+    error('no input files')
+  }
   compared.map(file => {
     switch (file.status) {
       case STATUS.FAIL:
