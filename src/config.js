@@ -45,11 +45,8 @@ if (program.config) {
   configFile = readConfigFile(join(dirname(projPath), '.bundlereport.rc'))
 }
 
-const defaultConfig = {
-  files: [],
-  name: '',
-  baseBranch: 'master'
-}
+const defaultConfig = readConfigFile(join(__dirname, 'default.bundlereport.rc'))
+
 if (Array.isArray(packageJSONconfig)) {
   config = Object.assign(
     {},
