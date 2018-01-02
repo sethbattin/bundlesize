@@ -1,6 +1,6 @@
 # This is the default config for bundle-report.  If you copy this to
 # {project_root}/.bundlereport.rc then that file will be used instead.
-# You may also create a json file with that name, or a js module.
+# This file is yaml, but config may be json or a js module with this name.
 # Other file names may be specified via he -c CLI argument, a string
 # setting in package.json, `"bundleReport": "path/to/configfile", or
 # as setting within an object in package.json, like so:
