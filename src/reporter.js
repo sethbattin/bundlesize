@@ -12,7 +12,7 @@ const cliReporter = compared => {
   compared.map(file => {
     switch (file.status) {
       case STATUS.FAIL:
-        error(file.message)
+        error(file.message, { label: 'FAIL', exit: false })
         break
       case STATUS.WARN:
         warn(file.message)
