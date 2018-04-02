@@ -46,6 +46,7 @@
     "github-build": "^1.2.0",
     "glob": "^7.1.2",
     "gzip-size": "^4.0.0",
+    "js-yaml": "^3.11.0",
     "prettycli": "^1.4.3",
     "read-pkg-up": "^2.0.0"
   },
